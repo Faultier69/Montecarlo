@@ -4,34 +4,27 @@ import matplotlib.pyplot as plt
 from tkinter import Tk
 from tkinter.filedialog import askopenfilename
 
-# Open file dialog to select the file
-Tk().withdraw()  # Prevents Tkinter window from appearing
+Tk().withdraw()
 file_path = askopenfilename(title="Select the CSV file containing trade data")
 
-# Load the data from the selected CSV file
 df = pd.read_csv(file_path)
-
-# Perform Monte Carlo simulation on individual trades
 num_simulations = 10000
 simulated_returns = []
 simulated_drawdowns = []
 
 for _ in range(num_simulations):
-    # Randomly select a trade from the data
     random_trade = df.sample(n=1, replace=True).iloc[0]
     simulated_returns.append(random_trade['Profit %'])
     simulated_drawdowns.append(random_trade['Drawdown %'])
 
-# Convert to DataFrame
 simulation_results = pd.DataFrame({
     'Simulated Return': simulated_returns,
     'Simulated Drawdown': simulated_drawdowns
 })
 
-# Save results to CSV
 simulation_results.to_csv('monte_carlo_simulation_results.csv', index=False)
 
-# Plot results
+# Plotting
 plt.figure(figsize=(12, 6))
 
 plt.subplot(1, 2, 1)
